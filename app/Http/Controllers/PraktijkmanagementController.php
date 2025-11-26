@@ -11,7 +11,7 @@ class PraktijkmanagementController extends Controller
      */
     public function index()
     {
-        return view('praktijkmanagement.index',[
+        return view('praktijkmanagement.index', [
             'title' => 'Praktijkmanagement Home',
         ]);
     }
