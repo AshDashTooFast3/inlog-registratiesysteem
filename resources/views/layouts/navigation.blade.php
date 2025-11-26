@@ -11,16 +11,24 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-black">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ 'Dashboard!!!' }}
+                        {{ 'Dashboard' }}
                     </x-nav-link>
                 </div>
 
-                @if (Auth::check() && in_array(Auth::user()->rolename, ['patient', 'Praktijkmanagement']))
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                @if (Auth::check() && in_array(Auth::user()->rolename, ['Patient', 'Praktijkmanagement']))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-black">
                         <x-nav-link href="{{ route('patient.index') }}" :active="request()->routeIs('patient.index')">
                             {{ 'Patient' }}
+                        </x-nav-link>
+                    </div>
+                @endif
+
+                @if (Auth::check() && in_array(Auth::user()->rolename, ['Praktijkmanagement']))
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex text-black">
+                        <x-nav-link href="{{ route('praktijkmanagement.userroles') }}" :active="request()->routeIs('praktijkmanagement.userroles')">
+                            {{ 'Gebruikersrollen' }}
                         </x-nav-link>
                     </div>
                 @endif
