@@ -49,14 +49,48 @@ class PraktijkmanagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id) {}
+    public function edit(string $id) {
+        $user = User::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
+        return view('praktijkmanagement.edit', [
+            'title' => 'Gebruiker wijzigen',
+            'user' => $user
+            ]);
+    }
+
+
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+        
+        if (! $user) {
+            return redirect()->route('praktijkmanagement.userroles')
+                ->with('error', 'Gebruiker niet gevonden.');
+        }
+
+        $request->validate([
+            'name'=> 'required|string|max:255',
+            'email'=> 'nullable|string|max:255',
+            'rolename' => 'nullable|string|max:20',
+        ]);
+        
+        if ($request->filled('name')) {
+            $user->name = $request->input('name');
+        }
+
+        if ($request->filled('email')) {
+            $user->email = $request->input('email');
+        }
+
+        if ($request->filled('rolename')) {
+            $user->rolename = $request->input('rolename');
+        }
+
+
+        $user->save();
+
+        return redirect()->route('praktijkmanagement.userroles')
+            ->with('success', 'Gebruiker succesvol bijgewerkt.');
     }
 
     /**
