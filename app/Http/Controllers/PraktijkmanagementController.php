@@ -44,36 +44,46 @@ class PraktijkmanagementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {}
+    public function show(string $id)
+    {
+        $user = User::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id) {
+        if (! $user) {
+            return redirect()->route('praktijkmanagement.userroles')
+                ->with('error', 'Gebruiker niet gevonden.');
+        }
+
+        return view('praktijkmanagement.show', [
+            'title' => 'Gebruiker details',
+            'user' => $user,
+        ]);
+    }
+
+    public function edit(string $id)
+    {
         $user = User::find($id);
 
         return view('praktijkmanagement.edit', [
             'title' => 'Gebruiker wijzigen',
-            'user' => $user
-            ]);
+            'user' => $user,
+        ]);
     }
-
 
     public function update(Request $request, string $id)
     {
         $user = User::find($id);
-        
+
         if (! $user) {
             return redirect()->route('praktijkmanagement.userroles')
                 ->with('error', 'Gebruiker niet gevonden.');
         }
 
         $request->validate([
-            'name'=> 'required|string|max:255',
-            'email'=> 'nullable|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|string|max:255',
             'rolename' => 'nullable|string|max:20',
         ]);
-        
+
         if ($request->filled('name')) {
             $user->name = $request->input('name');
         }
@@ -85,7 +95,6 @@ class PraktijkmanagementController extends Controller
         if ($request->filled('rolename')) {
             $user->rolename = $request->input('rolename');
         }
-
 
         $user->save();
 

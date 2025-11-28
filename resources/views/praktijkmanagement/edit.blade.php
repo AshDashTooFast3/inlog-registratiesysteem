@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-black dark:text-black leading-tight">
-            {{ _('Gebruiker bewerken') }}
+            {{ $title }}
         </h2>
     </x-slot>
 
@@ -31,7 +31,7 @@
 
                         <div class="mb-4">
                             <label for="rolename" class="block font-medium text-sm text-black dark:text-black">Nieuw rolnaam(optioneel)</label>
-                            <input type="text" name="rolename" id="rolename" value="{{ old ('rolename', $user->rolename) }}" class="form-input rounded-md shadow-sm mt-1 block w-full">
+                            <input type="text" name="rolename" id="rolename" value="{{ old('rolename', $user->rolename) }}" class="form-input rounded-md shadow-sm mt-1 block w-full">
                             @error('rolename')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
