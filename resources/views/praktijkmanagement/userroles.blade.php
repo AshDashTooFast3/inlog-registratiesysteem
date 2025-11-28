@@ -64,7 +64,7 @@
                                                     method="GET">
                                                     @csrf
                                                     @method('GET')
-                                                    <button type="submit" class="btn btn-info btn-sm">Details</button>
+                                                    <button type="submit" class="btn btn-info btn-sm text-white">Details</button>
                                                 </form>
                                             </td>
                                         </tr>
