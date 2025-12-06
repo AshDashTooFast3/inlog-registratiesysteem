@@ -5,46 +5,56 @@
         </h2>
     </x-slot>
 
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Sluiten"></button>
+        </div>
+        <meta http-equiv="refresh" content="3; url={{ route('praktijkmanagement.userroles') }}">
+    @elseif (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Sluiten"></button>
+        </div>
+        <meta http-equiv="refresh" content="3; url={{ route('praktijkmanagement.userroles') }}">
+    @endif
+
     <div class="py-12">
-        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-black">
-                    <form method="POST" action="{{ route('praktijkmanagement.update', ['id' => $user->id]) }}">
-                        @csrf
-                        @method('PUT')
+        <div class="max-w-xl mx-auto bg-white rounded-lg shadow-md p-8">
+            @foreach ($user as $us)
+                <form method="POST" action="{{ route('praktijkmanagement.update', $us->Id) }}">
+                    @csrf
+                    @method('PUT')
 
-                        <div class="mb-4">
-                            <label for="name" class="block font-medium text-sm text-gray-700 dark:text-black">Naam</label>
-                            <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" class="form-input rounded-md shadow-sm mt-1 block w-full">
-                            @error('name')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="mb-6">
+                        <label for="InputName" class="form-label font-semibold">Naam</label>
+                        <input name="name" type="text" class="form-control border rounded px-3 py-2 mt-1" id="InputName" aria-describedby="nameHelp"
+                            value="{{ old('name', $us->name) }}">
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="email" class="block font-medium text-sm text-black dark:text-black">E-mail</label>
-                            <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" class="form-input rounded-md shadow-sm mt-1 block w-full">
-                            @error('email')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="mb-6">
+                        <label for="InputDescription" class="form-label font-semibold">Email</label>
+                        <input name="email" type="email" class="form-control border rounded px-3 py-2 mt-1" id="InputDescription" aria-describedby="descriptionHelp"
+                            value="{{ old('email', $us->email) }}">
+                    </div>
 
-                        <div class="mb-4">
-                            <label for="rolename" class="block font-medium text-sm text-black dark:text-black">Nieuw rolnaam(optioneel)</label>
-                            <input type="text" name="rolename" id="rolename" value="{{ old('rolename', $user->rolename) }}" class="form-input rounded-md shadow-sm mt-1 block w-full">
-                            @error('rolename')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                    <div class="mb-6">
+                        <label for="InputRolename" class="form-label font-semibold">Gebruikersrol</label>
+                        <select name="rolename" class="form-select border rounded px-3 py-2 mt-1" aria-label="InputRolename">
+                            @foreach ($userroles as $userrole)
+                                <option value="{{ $userrole->rolename }}" @selected($userrole->rolename == $us->rolename)>
+                                    {{ $userrole->rolename }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="flex items-center justify-end mt-4">
-                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 dark:bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Opslaan
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                    <div class="flex justify-between items-center mt-8">
+                        <button type="submit" class="btn btn-primary px-4 py-2 rounded">Opslaan</button>
+                        <a href="{{ route('praktijkmanagement.index') }}" class="btn btn-secondary px-4 py-2 rounded">Annuleren</a>
+                    </div>
+                </form>
+            @endforeach
         </div>
     </div>
 </x-app-layout>

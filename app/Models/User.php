@@ -54,4 +54,30 @@ class User extends Authenticatable
 
         return $result;
     }
+
+    public function sp_GetUserById($user_Id)
+    {
+        $result = DB::select('CALL sp_GetUserById(:id)', ['id' => $user_Id]);
+
+        return $result;
+    }
+
+    public function sp_GetAllUserroles()
+    {
+        $result = DB::select('CALL sp_GetAllUserroles()');
+
+        return $result;
+    }
+
+    public function sp_UpdateUser($id, $name, $email, $rolename)
+    {
+        $result = DB::selectOne('CALL sp_UpdateUser(:id, :name, :email, :rolename)', [
+            'id' => $id,
+            'name' => $name,
+            'email' => $email,
+            'rolename' => $rolename,
+        ]);
+
+        return $result;
+    }
 }

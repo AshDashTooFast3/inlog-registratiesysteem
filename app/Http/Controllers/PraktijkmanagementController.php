@@ -46,6 +46,8 @@ class PraktijkmanagementController extends Controller
      */
     public function show(string $id)
     {
+        // var_dump("Ik ben bij show methode van project management controller");
+        // exit();
         $user = User::find($id);
 
         if (! $user) {
@@ -59,13 +61,21 @@ class PraktijkmanagementController extends Controller
         ]);
     }
 
-    public function edit(string $id)
+    public function edit(string $Id)
     {
-        $user = User::find($id);
+        
+        $user = $this->user->sp_GetUserById($Id);
+
+        // dd($user);
+
+        $userroles = $this->user->sp_GetAllUserroles();
+
+        // dd($userroles);
 
         return view('praktijkmanagement.edit', [
             'title' => 'Gebruiker wijzigen',
             'user' => $user,
+            'userroles' => $userroles,
         ]);
     }
 
@@ -78,25 +88,23 @@ class PraktijkmanagementController extends Controller
                 ->with('error', 'Gebruiker niet gevonden.');
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|string|max:255',
-            'rolename' => 'nullable|string|max:20',
+    
+       $validated = $request->validate([
+            'name' => 'required|string|max:50',
+            'email' => 'required|string|max:255',
+            'rolename' => 'required|string',
         ]);
 
-        if ($request->filled('name')) {
-            $user->name = $request->input('name');
-        }
+        $affected = $this->user->sp_UpdateUser(
+            $id,
+            $validated['name'],
+            $validated['email'],
+            $validated['rolename']
+        );
 
-        if ($request->filled('email')) {
-            $user->email = $request->input('email');
+        if ($affected === 0) {
+            return back()->with('error', 'Er is een fout opgetreden bij het bijwerken van de gebruiker.');
         }
-
-        if ($request->filled('rolename')) {
-            $user->rolename = $request->input('rolename');
-        }
-
-        $user->save();
 
         return redirect()->route('praktijkmanagement.userroles')
             ->with('success', 'Gebruiker succesvol bijgewerkt.');
