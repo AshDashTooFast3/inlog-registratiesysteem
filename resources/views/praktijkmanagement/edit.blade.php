@@ -42,9 +42,11 @@
                         <label for="InputRolename" class="form-label font-semibold">Gebruikersrol</label>
                         <select name="rolename" class="form-select border rounded px-3 py-2 mt-1" aria-label="InputRolename">
                             @foreach ($userroles as $userrole)
-                                <option value="{{ $userrole->rolename }}" @selected($userrole->rolename == $us->rolename)>
-                                    {{ $userrole->rolename }}
-                                </option>
+                                    @if ($userrole->rolename !== 'Praktijkmanagement')
+                                        <option value="{{ $userrole->rolename }}" @selected($userrole->rolename == $us->rolename)>
+                                            {{ $userrole->rolename }}
+                                        </option>
+                                    @endif
                             @endforeach
                         </select>
                     </div>
