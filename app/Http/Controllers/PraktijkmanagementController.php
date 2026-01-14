@@ -10,9 +10,9 @@ class PraktijkmanagementController extends Controller
 {
     private $user;
 
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->user = new User;
+        $this->user = $user;
     }
 
     /**
@@ -130,7 +130,8 @@ class PraktijkmanagementController extends Controller
 
     public function manageUserroles()
     {
-        $users = $this->user->sp_GetAllUsers(Auth::user()->id);
+        $users = $this->user->sp_GetAllUsers(Auth::id());
+        // $users = $this->user->sp_GetAllUsers(Auth::user()->id);
 
         return view('praktijkmanagement.userroles', [
             'title' => 'Gebruikersrollen',
